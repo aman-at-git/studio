@@ -8,14 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Mail } from 'lucide-react';
-import { db } from '@/lib/firebase'; // Import db instance
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; // Import Firestore functions
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
 });
 
 type FormData = z.infer<typeof formSchema>;
+
+const FIRESTORE_TIMEOUT_MS = 15000; // 15 seconds
 
 const JoinWaitlistSection = () => {
   const { toast } = useToast();
@@ -28,26 +30,51 @@ const JoinWaitlistSection = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      // Add a new document with a generated id to the "waitlist" collection.
-      await addDoc(collection(db, 'waitlist'), {
+      const firestoreWritePromise = addDoc(collection(db, 'waitlist'), {
         email: data.email,
-        submittedAt: serverTimestamp(), // Store submission timestamp
+        submittedAt: serverTimestamp(),
       });
+
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Firestore operation timed out')), FIRESTORE_TIMEOUT_MS)
+      );
+
+      // Race the Firestore operation against the timeout
+      await Promise.race([firestoreWritePromise, timeoutPromise]);
 
       toast({
         title: 'You\'re on the list!',
         description: `We've received your email: ${data.email}. We'll notify you about beta access.`,
         variant: 'default',
       });
-      form.reset(); // Reset form after successful submission
-    } catch (error) {
-      console.error('Error adding document to waitlist: ', error);
+      form.reset();
+    } catch (error: unknown) {
+      console.error('Error adding document to waitlist or timed out: ', error);
+
+      let title = 'Submission Failed';
+      let description = 'There was an error submitting your email. Please try again later.';
+
+      if (error instanceof Error && error.message.includes('Firestore operation timed out')) {
+        description = 'Submission timed out. Please check your internet connection and try again. If the issue persists, Firebase configuration might need review.';
+      } else if (typeof error === 'object' && error !== null && 'code' in error) {
+        // Handle Firebase specific errors
+        const firebaseError = error as { code: string; message: string };
+        if (firebaseError.code === 'permission-denied') {
+          description = 'Submission failed: Permission denied. This might be due to Firestore security rules. Please contact support.';
+        } else {
+          description = `An error occurred: ${firebaseError.message}. Please try again.`;
+        }
+      }
+      // For other unknown errors, the default message is used.
+
       toast({
-        title: 'Submission Failed',
-        description: 'There was an error submitting your email. Please try again later.',
+        title: title,
+        description: description,
         variant: 'destructive',
       });
     }
+    // react-hook-form will automatically set form.formState.isSubmitting to false
+    // when the promise returned by onSubmit resolves or rejects.
   };
 
   return (
@@ -78,7 +105,7 @@ const JoinWaitlistSection = () => {
                         placeholder="Enter your email address"
                         {...field}
                         className="py-6 text-base"
-                        disabled={form.formState.isSubmitting} // Disable input while form is submitting
+                        disabled={form.formState.isSubmitting}
                       />
                     </FormControl>
                     <FormMessage />
