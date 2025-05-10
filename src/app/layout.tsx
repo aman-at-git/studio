@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Toaster } from '@/components/ui/toaster'; // Import Toaster
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,10 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark"> {/* Apply dark theme globally */}
+    <html lang="en" className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
         {children}
-        <Toaster /> {/* Add Toaster for notifications */}
+        <Toaster />
       </body>
     </html>
   );
