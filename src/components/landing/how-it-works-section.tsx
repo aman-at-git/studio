@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UploadCloud, ListChecks, Send } from 'lucide-react';
+import { UploadCloud, ListChecks, Send, Brain } from 'lucide-react';
 
 const steps = [
   {
@@ -15,7 +15,7 @@ const steps = [
   {
     icon: <Send className="h-10 w-10 text-primary" />,
     title: 'AI Applies For You',
-    description: 'JobPilot AI continuously monitors LinkedIn and automatically applies to the most relevant jobs on your behalf.',
+    description: 'JobPilot AI continuously monitors LinkedIn and automatically applies to the most relevant jobs on your behalf. We do the hard part, freeing you to prepare for interviews and stay ahead.',
   },
 ];
 

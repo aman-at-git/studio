@@ -10,7 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'JobPilot AI - Land Your Dream Job While You Sleep',
-  description: 'JobPilot AI automatically finds and applies to relevant jobs for you on LinkedIn. Upload your resume, list your skills, and let our AI agent accelerate your job search.',
+  description: 'JobPilot AI does the hard part: finding and applying to jobs on LinkedIn, keeping you ahead of 99% of candidates. You focus on preparing for interviews.',
 };
 
 export default function RootLayout({

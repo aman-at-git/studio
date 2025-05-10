@@ -20,7 +20,7 @@ const features = [
   {
     icon: <Zap className="h-8 w-8 text-primary" />,
     title: 'Accelerate Your Search',
-    description: 'Save countless hours and focus on what matters: preparing for interviews.',
+    description: 'We do the hard part of applying so you save countless hours. Focus on what truly matters: preparing for interviews and staying ahead of the competition.',
   },
   {
     icon: <UserCheck className="h-8 w-8 text-primary" />,

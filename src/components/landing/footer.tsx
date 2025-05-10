@@ -11,7 +11,7 @@ const Footer = () => {
           <div>
             <Logo />
             <p className="mt-2 text-sm text-muted-foreground">
-              Automating your path to the perfect job.
+              We do the hard part of applying. You prepare for the interview. Stay ahead with JobPilot AI.
             </p>
           </div>
           <div className="flex space-x-6">

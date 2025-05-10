@@ -7,10 +7,10 @@ const HeroSection = () => {
     <section className="py-20 md:py-32 bg-gradient-to-b from-background to-background/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-          Land Your Dream Job <span className="text-primary">While You Sleep</span>
+          Nail the Interview. <span className="text-primary">We Handle the Applications.</span>
         </h1>
         <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground sm:text-xl md:text-2xl">
-          Stop endlessly scrolling. Upload your resume, define your skills, and let JobPilot AI monitor LinkedIn and apply to the best roles for you—automatically.
+          JobPilot AI tackles the job hunt for you, applying to roles on LinkedIn and keeping you ahead of 99% of candidates. You focus on preparation, we do the hard part.
         </p>
         <div className="mt-10">
           <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-shadow">
