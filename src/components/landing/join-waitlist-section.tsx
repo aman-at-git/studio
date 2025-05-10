@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Mail } from 'lucide-react';
+import { db } from '@/lib/firebase'; // Import db instance
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; // Import Firestore functions
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -24,18 +26,28 @@ const JoinWaitlistSection = () => {
     },
   });
 
-  // Placeholder for actual submission logic (e.g., to Firebase)
   const onSubmit = async (data: FormData) => {
-    console.log('Waitlist form submitted:', data);
-    // Here you would typically call a server action or API endpoint
-    // For example: await submitToFirebase(data.email);
+    try {
+      // Add a new document with a generated id to the "waitlist" collection.
+      await addDoc(collection(db, 'waitlist'), {
+        email: data.email,
+        submittedAt: serverTimestamp(), // Store submission timestamp
+      });
 
-    toast({
-      title: 'You\'re on the list!',
-      description: `We've received your email: ${data.email}. We'll notify you about beta access.`,
-      variant: 'default', // Ensure this variant matches your toast component setup
-    });
-    form.reset(); // Reset form after submission
+      toast({
+        title: 'You\'re on the list!',
+        description: `We've received your email: ${data.email}. We'll notify you about beta access.`,
+        variant: 'default',
+      });
+      form.reset(); // Reset form after successful submission
+    } catch (error) {
+      console.error('Error adding document to waitlist: ', error);
+      toast({
+        title: 'Submission Failed',
+        description: 'There was an error submitting your email. Please try again later.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -66,6 +78,7 @@ const JoinWaitlistSection = () => {
                         placeholder="Enter your email address"
                         {...field}
                         className="py-6 text-base"
+                        disabled={form.formState.isSubmitting} // Disable input while form is submitting
                       />
                     </FormControl>
                     <FormMessage />
