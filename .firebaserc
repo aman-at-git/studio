@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "avitt-site"
+  },
+  "targets": {
+    "avitt-site": {
+      "hosting": {
+        "job-pilot": [
+          "avitt-site"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

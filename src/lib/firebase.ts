@@ -1,5 +1,6 @@
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
+import { getAnalytics, Analytics } from "firebase/analytics";
 import { getFirestore, Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -15,11 +16,15 @@ const firebaseConfig = {
 // Initialize Firebase
 let app: FirebaseApp;
 if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
+  app = initializeApp(firebaseConfig);  
 } else {
   app = getApp();
 }
 
+let analytics: Analytics;
+if (typeof window !== 'undefined') { // Only initialize analytics in the browser
+    analytics = getAnalytics(app);
+}
 const db: Firestore = getFirestore(app);
 
 export { db };

@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "source": ".",
+    "site": "job-pilot",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "asia-east1",
+      "app": {
+        "imageOptimization": false
+      }
+    }
+  }
+}

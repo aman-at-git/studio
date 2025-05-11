@@ -1,6 +1,4 @@
-import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Quote } from 'lucide-react';
 
 const testimonials = [
   {
@@ -49,13 +47,13 @@ const TestimonialsSection = () => {
               </CardContent>
               <CardFooter className="mt-4">
                 <div className="flex items-center">
-                  <Image
+                  <img
                     src={testimonial.avatar}
                     alt={testimonial.name}
                     width={48}
                     height={48}
                     className="rounded-full mr-4"
-                    data-ai-hint={testimonial.aiHint}
+                    data-ai-hint={testimonial.aiHint as string}
                   />
                   <div>
                     <p className="font-semibold text-foreground">{testimonial.name}</p>
@@ -72,3 +70,4 @@ const TestimonialsSection = () => {
 };
 
 export default TestimonialsSection;
+import { Quote } from 'lucide-react';
